@@ -20,7 +20,7 @@ typedef ProgressCallback = void Function(double? progress);
 
 typedef ProgressAction = Future<void> Function(ProgressCallback);
 
-typedef ErrorCallback = void Function(Object error);
+typedef ErrorCallback = void Function(Object error, StackTrace stackTrace);
 
 ///
 /// Base ProgressBuilder
@@ -118,10 +118,10 @@ class _ProgressBuilderState extends State<ProgressBuilder>
     try {
       await widget.action?.call(_progressCallback);
       widget.onSuccess?.call();
-    } catch (e) {
+    } catch (e,s) {
       _error = e;
       if (widget.onError != null) {
-        widget.onError!(e);
+        widget.onError!(e,s);
       } else {
         rethrow;
       }
